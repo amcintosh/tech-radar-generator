@@ -2,7 +2,7 @@ const Blip = require('../../src/models/blip')
 const Ring = require('../../src/models/ring')
 
 describe('Blip', function () {
-  var blip
+  let blip
 
   beforeEach(function () {
     blip = new Blip(

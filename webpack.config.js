@@ -10,11 +10,11 @@ const cssnano = require('cssnano')
 
 const r = f => path.resolve(__dirname, f)
 
-let main = [r('src/site.js')]
-let common = [r('./src/common.js')]
+const main = [r('src/site.js')]
+const common = [r('./src/common.js')]
 let devtool
 
-let plugins = [
+const plugins = [
   new CleanWebpackPlugin(),
   new MiniCssExtractPlugin({ filename: '[name].[hash].css' }),
   new HtmlWebpackPlugin({
@@ -34,15 +34,15 @@ module.exports = {
   context: process.cwd(),
 
   entry: {
-    'main': main,
-    'common': common
+    main,
+    common
   },
 
-  node: {
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty'
+  resolve: {
+    fallback: {
+      fs: false
+    }
+
   },
 
   output: {
@@ -69,14 +69,23 @@ module.exports = {
           {
             loader: require.resolve('postcss-loader'),
             options: {
-              ident: 'postcss',
-              plugins: () => [
-                postcssPresetEnv({ browsers: 'last 2 versions' }),
-                cssnano({ preset: ['default', { discardComments: { removeAll: true } }] })
-              ]
+              postcssOptions: {
+                plugins: [
+                  postcssPresetEnv({ browsers: 'last 2 versions' }),
+                  cssnano({ preset: ['default', { discardComments: { removeAll: true } }] })
+                ]
+              }
             }
           },
-          require.resolve('sass-loader')
+          {
+            loader: 'resolve-url-loader'
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true
+            }
+          }
         ]
       },
       {
@@ -99,10 +108,10 @@ module.exports = {
       },
       {
         test: require.resolve('jquery'),
-        use: [
-          { loader: require.resolve('expose-loader'), options: 'jQuery' },
-          { loader: require.resolve('expose-loader'), options: '$' }
-        ]
+        loader: 'expose-loader',
+        options: {
+          exposes: ['$', 'jQuery']
+        }
       },
       {
         test: r('./src/data'),
@@ -117,9 +126,9 @@ module.exports = {
     ]
   },
 
-  plugins: plugins,
+  plugins,
 
-  devtool: devtool,
+  devtool,
 
   devServer: {
     host: '0.0.0.0',

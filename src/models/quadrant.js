@@ -1,5 +1,5 @@
 const Quadrant = function (name) {
-  var self, blips
+  let self, blips
 
   self = {}
   blips = []

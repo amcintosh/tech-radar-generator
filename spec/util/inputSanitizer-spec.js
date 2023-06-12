@@ -1,14 +1,14 @@
 const InputSanitizer = require('../../src/util/inputSanitizer')
 
 describe('InputSanitizer', function () {
-  var sanitizer, rawBlip, blip
+  let sanitizer, rawBlip, blip
 
   beforeAll(function () {
     sanitizer = new InputSanitizer()
-    var description = "<b>Hello</b> <script>alert('dangerous');</script>there <h1>heading</h1>"
+    const description = "<b>Hello</b> <script>alert('dangerous');</script>there <h1>heading</h1>"
     rawBlip = {
       name: "Hello <script>alert('dangerous');</script>there <h1>blip</h1>",
-      description: description,
+      description,
       ring: '<a href="/asd">Adopt</a>',
       quadrant: '<strong>techniques and tools</strong>',
       isNew: 'true<br>'
@@ -50,7 +50,7 @@ describe('InputSanitizer', function () {
 })
 
 describe('Input Santizer for Protected sheet', function () {
-  var sanitizer, rawBlip, blip, header
+  let sanitizer, rawBlip, blip, header
   beforeAll(function () {
     sanitizer = new InputSanitizer()
     header = [

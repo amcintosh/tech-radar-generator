@@ -7,7 +7,7 @@ const ExceptionMessages = require('../../src/util/exceptionMessages')
 
 describe('Radar', function () {
   it('has no quadrants by default', function () {
-    var radar = new Radar()
+    const radar = new Radar()
 
     expect(radar.quadrants()[0].quadrant).not.toBeDefined()
     expect(radar.quadrants()[1].quadrant).not.toBeDefined()
@@ -16,7 +16,7 @@ describe('Radar', function () {
   })
 
   it('sets the first quadrant', function () {
-    var quadrant, radar, blip
+    let quadrant, radar, blip
 
     blip = new Blip('A', new Ring('First'))
     quadrant = new Quadrant('First')
@@ -30,7 +30,7 @@ describe('Radar', function () {
   })
 
   it('sets the second quadrant', function () {
-    var quadrant, radar, blip
+    let quadrant, radar, blip
 
     blip = new Blip('A', new Ring('First'))
     quadrant = new Quadrant('Second')
@@ -44,7 +44,7 @@ describe('Radar', function () {
   })
 
   it('sets the third quadrant', function () {
-    var quadrant, radar, blip
+    let quadrant, radar, blip
 
     blip = new Blip('A', new Ring('First'))
     quadrant = new Quadrant('Third')
@@ -58,7 +58,7 @@ describe('Radar', function () {
   })
 
   it('sets the fourth quadrant', function () {
-    var quadrant, radar, blip
+    let quadrant, radar, blip
 
     blip = new Blip('A', new Ring('First'))
     quadrant = new Quadrant('Fourth')
@@ -72,7 +72,7 @@ describe('Radar', function () {
   })
 
   it('throws an error if too many quadrants are added', function () {
-    var quadrant, radar, blip
+    let quadrant, radar, blip
 
     blip = new Blip('A', new Ring('First'))
     quadrant = new Quadrant('First')
@@ -88,7 +88,7 @@ describe('Radar', function () {
   })
 
   it('throws an error if less than 4 quadrants are added', function () {
-    var quadrant, radar, blip
+    let quadrant, radar, blip
 
     blip = new Blip('A', new Ring('First'))
     quadrant = new Quadrant('First')
@@ -103,7 +103,7 @@ describe('Radar', function () {
   })
 
   describe('blip numbers', function () {
-    var firstQuadrant, secondQuadrant, radar, firstRing
+    let firstQuadrant, secondQuadrant, radar, firstRing
 
     beforeEach(function () {
       firstRing = new Ring('Adopt', 0)
@@ -138,10 +138,10 @@ describe('Radar', function () {
 
   describe('alternatives', function () {
     it('returns a provided alternatives', function () {
-      var radar = new Radar()
+      const radar = new Radar()
 
-      var alternative1 = 'alternative1'
-      var alternative2 = 'alternative2'
+      const alternative1 = 'alternative1'
+      const alternative2 = 'alternative2'
 
       radar.addAlternative(alternative1)
       radar.addAlternative(alternative2)
@@ -151,7 +151,7 @@ describe('Radar', function () {
   })
 
   describe('rings', function () {
-    var quadrant, radar, firstRing, secondRing, otherQuadrant
+    let quadrant, radar, firstRing, secondRing, otherQuadrant
 
     beforeEach(function () {
       firstRing = new Ring('Adopt', 0)

@@ -1,7 +1,7 @@
 const RingCalculator = require('../../src/util/ringCalculator')
 
 describe('ringCalculator', function () {
-  var ringLength, radarSize, ringCalculator
+  let ringLength, radarSize, ringCalculator
   beforeAll(function () {
     ringLength = 4
     radarSize = 500

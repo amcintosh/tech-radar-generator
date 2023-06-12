@@ -23,12 +23,14 @@ First, create a JSON file containing the data behind your tech radar. This data 
 [schema]: https://github.com/dprgarner/tech-radar-generator/blob/master/schema.json
 
 The top-level JSON must contain the following properties:
+
 - `title` - `string` - The title of the radar, which appears in the page title and the header of the page
 - `quadrants` - `string[]` - An array of exactly four quadrant names in the radar, rendered anti-clockwise from the top-right
 - `rings` - `string[]` - An array of up to four rings in the radar, from inner-most to outer-most
 - `blips` - `blip[]` - An array of _blip_ objects determining the items appearing on the radar
 
 Each blip object must contain the following properties:
+
 - `name` - `string` - The name of the blip
 - `quadrant` - `string` - The quadrant of the radar that the blip appears in. There should be exactly four different quadrants in the full list of blips.
 - `ring` - `string` - The ring of the radar that the blip should appear in. This must take one of the provided ring values.
@@ -78,19 +80,21 @@ For example:
 ## Usage with the CLI
 
 To use this JSON data with the CLI, install the library and run it against the JSON file. If this tool is being incorporated into an existing JavaScript project:
-```bash
+
+```shell
 > yarn add tech-radar-generator
 > yarn tech-radar-generator ./my-radar.json ./dist
 ```
 
 If this tool is not being incorporated into a JavaScript project, the package can be run using npx:
-```bash
+
+```shell
 > npx tech-radar-generator ./my-radar.json ./dist
 ```
 
 The options for the CLI tool can be seen by running `npx tech-radar-generator --help`:
 
-```bash
+```shell
 > npx tech-radar-generator --help
 tech-radar-generator <input> <output>
 
@@ -132,7 +136,6 @@ Unlike the CLI, this function takes the source data as a JavaScript object, and 
 ## Usage with Docker
 
 An example Dockerfile with an nginx config:
-
 
 ```dockerfile
 # Dockerfile
@@ -188,19 +191,27 @@ This tool is powered by Webpack. Some commonly-used scripts are set in the npm-s
 
 To run the webpack-dev-server:
 
-    yarn dev
+```shell
+yarn dev
+```
 
 To run the tests:
 
-    yarn test
+```shell
+yarn test
+```
 
 To run the linter:
 
-    yarn lint
+```shell
+yarn lint
+```
 
 To format the code using [standard][standard]:
 
-    yarn format
+```shell
+yarn format
+```
 
 [standard]: https://standardjs.com/
 
@@ -208,13 +219,13 @@ To format the code using [standard][standard]:
 
 Releases to NPM are performed via Travis when tagged commits are pushed to the repo. Create a new tagged commit and bump the version in package.json with the npm version script:
 
-```bash
+```shell
 npm version patch
 ```
 
 and push the new commits and tags with:
 
-```bash
+```shell
 git push && git push --tags
 ```
 

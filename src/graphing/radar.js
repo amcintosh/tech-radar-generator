@@ -14,24 +14,24 @@ const MIN_BLIP_WIDTH = 12
 const ANIMATION_DURATION = 1000
 
 const Radar = function (size, radar) {
-  var svg, radarElement, quadrantButtons, buttonsGroup, header, alternativeDiv
+  let svg, radarElement, quadrantButtons, buttonsGroup, header, alternativeDiv
 
-  var tip = d3.tip().attr('class', 'd3-tip').html(function (text) {
+  const tip = d3.tip().attr('class', 'd3-tip').html(function (text) {
     return text
   })
 
   tip.direction(function () {
     if (d3.select('.quadrant-table.selected').node()) {
-      var selectedQuadrant = d3.select('.quadrant-table.selected')
+      const selectedQuadrant = d3.select('.quadrant-table.selected')
       if (selectedQuadrant.classed('first') || selectedQuadrant.classed('fourth')) { return 'ne' } else { return 'nw' }
     }
     return 'n'
   })
 
-  var ringCalculator = new RingCalculator(radar.rings().length, center())
+  const ringCalculator = new RingCalculator(radar.rings().length, center())
 
-  var self = {}
-  var chance
+  const self = {}
+  let chance
 
   function center () {
     return Math.round(size / 2)
@@ -42,14 +42,14 @@ const Radar = function (size, radar) {
   }
 
   function plotLines (quadrantGroup, quadrant) {
-    var startX = size * (1 - (-Math.sin(toRadian(quadrant.startAngle)) + 1) / 2)
-    var endX = size * (1 - (-Math.sin(toRadian(quadrant.startAngle - 90)) + 1) / 2)
+    const startX = size * (1 - (-Math.sin(toRadian(quadrant.startAngle)) + 1) / 2)
+    const endX = size * (1 - (-Math.sin(toRadian(quadrant.startAngle - 90)) + 1) / 2)
 
-    var startY = size * (1 - (Math.cos(toRadian(quadrant.startAngle)) + 1) / 2)
-    var endY = size * (1 - (Math.cos(toRadian(quadrant.startAngle - 90)) + 1) / 2)
+    let startY = size * (1 - (Math.cos(toRadian(quadrant.startAngle)) + 1) / 2)
+    let endY = size * (1 - (Math.cos(toRadian(quadrant.startAngle - 90)) + 1) / 2)
 
     if (startY > endY) {
-      var aux = endY
+      const aux = endY
       endY = startY
       startY = aux
     }
@@ -66,14 +66,14 @@ const Radar = function (size, radar) {
   }
 
   function plotQuadrant (rings, quadrant) {
-    var quadrantGroup = svg.append('g')
+    const quadrantGroup = svg.append('g')
       .attr('class', 'quadrant-group quadrant-group-' + quadrant.order)
       .on('mouseover', mouseoverQuadrant.bind({}, quadrant.order))
       .on('mouseout', mouseoutQuadrant.bind({}, quadrant.order))
       .on('click', selectQuadrant.bind({}, quadrant.order, quadrant.startAngle))
 
     rings.forEach(function (ring, i) {
-      var arc = d3.arc()
+      const arc = d3.arc()
         .innerRadius(ringCalculator.getRadius(i))
         .outerRadius(ringCalculator.getRadius(i + 1))
         .startAngle(toRadian(quadrant.startAngle))
@@ -133,22 +133,22 @@ const Radar = function (size, radar) {
   }
 
   function addRing (ring, order) {
-    var table = d3.select('.quadrant-table.' + order)
+    const table = d3.select('.quadrant-table.' + order)
     table.append('h3').text(ring)
     return table.append('ul')
   }
 
   function calculateBlipCoordinates (blip, chance, minRadius, maxRadius, startAngle) {
-    var adjustX = Math.sin(toRadian(startAngle)) - Math.cos(toRadian(startAngle))
-    var adjustY = -Math.cos(toRadian(startAngle)) - Math.sin(toRadian(startAngle))
+    const adjustX = Math.sin(toRadian(startAngle)) - Math.cos(toRadian(startAngle))
+    const adjustY = -Math.cos(toRadian(startAngle)) - Math.sin(toRadian(startAngle))
 
-    var radius = chance.floating({ min: minRadius + blip.width / 2, max: maxRadius - blip.width / 2 })
-    var angleDelta = Math.asin(blip.width / 2 / radius) * 180 / Math.PI
+    const radius = chance.floating({ min: minRadius + blip.width / 2, max: maxRadius - blip.width / 2 })
+    let angleDelta = Math.asin(blip.width / 2 / radius) * 180 / Math.PI
     angleDelta = angleDelta > 45 ? 45 : angleDelta
-    var angle = toRadian(chance.integer({ min: angleDelta, max: 90 - angleDelta }))
+    const angle = toRadian(chance.integer({ min: angleDelta, max: 90 - angleDelta }))
 
-    var x = center() + radius * Math.cos(angle) * adjustX
-    var y = center() + radius * Math.sin(angle) * adjustY
+    const x = center() + radius * Math.cos(angle) * adjustX
+    const y = center() + radius * Math.sin(angle) * adjustY
 
     return [x, y]
   }
@@ -160,7 +160,7 @@ const Radar = function (size, radar) {
   }
 
   function plotBlips (quadrantGroup, rings, quadrantWrapper) {
-    var blips, quadrant, startAngle, order
+    let blips, quadrant, startAngle, order
 
     quadrant = quadrantWrapper.quadrant
     startAngle = quadrantWrapper.startAngle
@@ -173,7 +173,7 @@ const Radar = function (size, radar) {
 
     blips = quadrant.blips()
     rings.forEach(function (ring, i) {
-      var ringBlips = blips.filter(function (blip) {
+      const ringBlips = blips.filter(function (blip) {
         return blip.ring() === ring
       })
 
@@ -181,21 +181,21 @@ const Radar = function (size, radar) {
         return
       }
 
-      var maxRadius, minRadius
+      let maxRadius, minRadius
 
       minRadius = ringCalculator.getRadius(i)
       maxRadius = ringCalculator.getRadius(i + 1)
 
-      var sumRing = ring.name().split('').reduce(function (p, c) {
+      const sumRing = ring.name().split('').reduce(function (p, c) {
         return p + c.charCodeAt(0)
       }, 0)
-      var sumQuadrant = quadrant.name().split('').reduce(function (p, c) {
+      const sumQuadrant = quadrant.name().split('').reduce(function (p, c) {
         return p + c.charCodeAt(0)
       }, 0)
       chance = new Chance(Math.PI * sumRing * ring.name().length * sumQuadrant * quadrant.name().length)
 
-      var ringList = addRing(ring.name(), order)
-      var allBlipCoordinatesInRing = []
+      const ringList = addRing(ring.name(), order)
+      const allBlipCoordinatesInRing = []
 
       ringBlips.forEach(function (blip) {
         const coordinates = findBlipCoordinates(blip,
@@ -212,9 +212,9 @@ const Radar = function (size, radar) {
 
   function findBlipCoordinates (blip, minRadius, maxRadius, startAngle, allBlipCoordinatesInRing) {
     const maxIterations = 200
-    var coordinates = calculateBlipCoordinates(blip, chance, minRadius, maxRadius, startAngle)
-    var iterationCounter = 0
-    var foundAPlace = false
+    let coordinates = calculateBlipCoordinates(blip, chance, minRadius, maxRadius, startAngle)
+    let iterationCounter = 0
+    let foundAPlace = false
 
     while (iterationCounter < maxIterations) {
       if (thereIsCollision(blip, coordinates, allBlipCoordinatesInRing)) {
@@ -235,10 +235,10 @@ const Radar = function (size, radar) {
   }
 
   function drawBlipInCoordinates (blip, coordinates, order, quadrantGroup, ringList) {
-    var x = coordinates[0]
-    var y = coordinates[1]
+    const x = coordinates[0]
+    const y = coordinates[1]
 
-    var group = quadrantGroup.append('g').attr('class', 'blip-link').attr('id', 'blip-link-' + blip.number())
+    const group = quadrantGroup.append('g').attr('class', 'blip-link').attr('id', 'blip-link-' + blip.number())
 
     if (blip.isNew()) {
       triangle(blip, x, y, order, group)
@@ -255,28 +255,28 @@ const Radar = function (size, radar) {
       .attr('text-anchor', 'middle')
       .text(blip.number())
 
-    var blipListItem = ringList.append('li')
-    var blipText = blip.number() + '. ' + blip.name() + (blip.topic() ? ('. - ' + blip.topic()) : '')
+    const blipListItem = ringList.append('li')
+    const blipText = blip.number() + '. ' + blip.name() + (blip.topic() ? ('. - ' + blip.topic()) : '')
     blipListItem.append('div')
       .attr('class', 'blip-list-item')
       .attr('id', 'blip-list-item-' + blip.number())
       .text(blipText)
 
-    var blipItemDescription = blipListItem.append('div')
+    const blipItemDescription = blipListItem.append('div')
       .attr('id', 'blip-description-' + blip.number())
       .attr('class', 'blip-item-description')
     if (blip.description()) {
       blipItemDescription.append('p').html(blip.description())
     }
 
-    var mouseOver = function () {
+    const mouseOver = function () {
       d3.selectAll('g.blip-link').attr('opacity', 0.3)
       group.attr('opacity', 1.0)
       blipListItem.selectAll('.blip-list-item').classed('highlight', true)
       tip.show(blip.name(), group.node())
     }
 
-    var mouseOut = function () {
+    const mouseOut = function () {
       d3.selectAll('g.blip-link').attr('opacity', 1.0)
       blipListItem.selectAll('.blip-list-item').classed('highlight', false)
       tip.hide().style('left', 0).style('top', 0)
@@ -285,7 +285,7 @@ const Radar = function (size, radar) {
     blipListItem.on('mouseover', mouseOver).on('mouseout', mouseOut)
     group.on('mouseover', mouseOver).on('mouseout', mouseOut)
 
-    var clickBlip = function () {
+    const clickBlip = function () {
       d3.select('.blip-item-description.expanded').node() !== blipItemDescription.node() &&
         d3.select('.blip-item-description.expanded').classed('expanded', false)
       blipItemDescription.classed('expanded', !blipItemDescription.classed('expanded'))
@@ -323,14 +323,14 @@ const Radar = function (size, radar) {
   function drawLegend (order) {
     removeRadarLegend()
 
-    var triangleKey = 'New or moved'
-    var circleKey = 'No change'
+    const triangleKey = 'New or moved'
+    const circleKey = 'No change'
 
-    var container = d3.select('svg').append('g')
+    const container = d3.select('svg').append('g')
       .attr('class', 'legend legend' + '-' + order)
 
-    var x = 10
-    var y = 10
+    let x = 10
+    let y = 10
 
     if (order === 'first') {
       x = 4 * size / 5
@@ -521,22 +521,22 @@ const Radar = function (size, radar) {
     d3.selectAll('.quadrant-table.' + order).classed('selected', true)
     d3.selectAll('.blip-item-description').classed('expanded', false)
 
-    var scale = 2
+    const scale = 2
 
-    var adjustX = Math.sin(toRadian(startAngle)) - Math.cos(toRadian(startAngle))
-    var adjustY = Math.cos(toRadian(startAngle)) + Math.sin(toRadian(startAngle))
+    const adjustX = Math.sin(toRadian(startAngle)) - Math.cos(toRadian(startAngle))
+    const adjustY = Math.cos(toRadian(startAngle)) + Math.sin(toRadian(startAngle))
 
-    var translateX = (-1 * (1 + adjustX) * size / 2 * (scale - 1)) + (-adjustX * (1 - scale / 2) * size)
-    var translateY = (-1 * (1 - adjustY) * (size / 2 - 7) * (scale - 1)) - ((1 - adjustY) / 2 * (1 - scale / 2) * size)
+    const translateX = (-1 * (1 + adjustX) * size / 2 * (scale - 1)) + (-adjustX * (1 - scale / 2) * size)
+    const translateY = (-1 * (1 - adjustY) * (size / 2 - 7) * (scale - 1)) - ((1 - adjustY) / 2 * (1 - scale / 2) * size)
 
-    var translateXAll = (1 - adjustX) / 2 * size * scale / 2 + ((1 - adjustX) / 2 * (1 - scale / 2) * size)
-    var translateYAll = (1 + adjustY) / 2 * size * scale / 2
+    const translateXAll = (1 - adjustX) / 2 * size * scale / 2 + ((1 - adjustX) / 2 * (1 - scale / 2) * size)
+    const translateYAll = (1 + adjustY) / 2 * size * scale / 2
 
-    var moveRight = (1 + adjustX) * (0.8 * window.innerWidth - size) / 2
-    var moveLeft = (1 - adjustX) * (0.8 * window.innerWidth - size) / 2
+    const moveRight = (1 + adjustX) * (0.8 * window.innerWidth - size) / 2
+    const moveLeft = (1 - adjustX) * (0.8 * window.innerWidth - size) / 2
 
-    var blipScale = 3 / 4
-    var blipTranslate = (1 - blipScale) / blipScale
+    const blipScale = 3 / 4
+    const blipTranslate = (1 - blipScale) / blipScale
 
     svg.style('left', moveLeft + 'px').style('right', moveRight + 'px')
     d3.select('.quadrant-group-' + order)
@@ -544,8 +544,8 @@ const Radar = function (size, radar) {
       .duration(ANIMATION_DURATION)
       .attr('transform', 'translate(' + translateX + ',' + translateY + ')scale(' + scale + ')')
     d3.selectAll('.quadrant-group-' + order + ' .blip-link text').each(function () {
-      var x = d3.select(this).attr('x')
-      var y = d3.select(this).attr('y')
+      const x = d3.select(this).attr('x')
+      const y = d3.select(this).attr('y')
       d3.select(this.parentNode)
         .transition()
         .duration(ANIMATION_DURATION)
@@ -572,9 +572,9 @@ const Radar = function (size, radar) {
   }
 
   function constructSheetUrl (sheetName) {
-    var noParamUrl = window.location.href.substring(0, window.location.href.indexOf(window.location.search))
-    var queryParams = QueryParams(window.location.search.substring(1))
-    var sheetUrl = noParamUrl + '?sheetId=' + queryParams.sheetId + '&sheetName=' + encodeURIComponent(sheetName)
+    const noParamUrl = window.location.href.substring(0, window.location.href.indexOf(window.location.search))
+    const queryParams = QueryParams(window.location.search.substring(1))
+    const sheetUrl = noParamUrl + '?sheetId=' + queryParams.sheetId + '&sheetName=' + encodeURIComponent(sheetName)
     return sheetUrl
   }
 
@@ -588,7 +588,7 @@ const Radar = function (size, radar) {
       return
     }
 
-    var alternativeSheetButton = alternativeDiv
+    const alternativeSheetButton = alternativeDiv
       .append('div')
       .classed('multiple-sheet-button-group', true)
 
@@ -609,13 +609,13 @@ const Radar = function (size, radar) {
   }
 
   self.plot = function () {
-    var rings, quadrants, alternatives, currentSheet
+    let rings, quadrants, alternatives, currentSheet
 
     rings = radar.rings()
     quadrants = radar.quadrants()
     alternatives = radar.getAlternatives()
     currentSheet = radar.getCurrentSheet()
-    var header = plotRadarHeader()
+    const header = plotRadarHeader()
 
     plotAlternativeRadars(alternatives, currentSheet)
 
@@ -626,7 +626,7 @@ const Radar = function (size, radar) {
     svg.attr('id', 'radar-plot').attr('width', size).attr('height', size + 14)
 
     _.each(quadrants, function (quadrant) {
-      var quadrantGroup = plotQuadrant(rings, quadrant)
+      const quadrantGroup = plotQuadrant(rings, quadrant)
       plotLines(quadrantGroup, quadrant)
       plotTexts(quadrantGroup, rings, quadrant)
       plotBlips(quadrantGroup, rings, quadrant)
